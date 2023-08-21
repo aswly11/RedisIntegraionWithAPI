@@ -22,7 +22,7 @@ namespace RedisIntegraionWithAPI.Services
         public async Task<T> GetData<T>(string key)
         {
             var value = await _cacheDb.StringGetAsync(key);
-            if (!string.IsNullOrEmpty(value))
+            if (value.HasValue)
             {
                 return JsonSerializer.Deserialize<T>(value);
             }

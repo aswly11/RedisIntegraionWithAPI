@@ -15,16 +15,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddEntityFrameworkNpgsql()
-.AddDbContext<AppDBContext>(opt=>opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+.AddDbContext<AppDBContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
                  ConnectionMultiplexer.Connect(new ConfigurationOptions
                  {
-                     EndPoints = { "localhost:6376" },
+                     EndPoints = { "localhost:6379" },
                      AbortOnConnectFail = false,
-                     Ssl = true,
-                     SslProtocols = System.Security.Authentication.SslProtocols.Tls12
-                 }));
+                      }));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,7 +32,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
